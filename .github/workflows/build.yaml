@@ -45,7 +45,7 @@ jobs:
           sudo make install
 
       - name: Update ld cache
-        run: ldconfig
+        run: sudo ldconfig
 
       - name: Compile
         run: |
