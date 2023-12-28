@@ -14,7 +14,6 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          printf "cwd is %s" "$(pwd)"
           set -eux
           case "${TLSTYPE}" in
             openssl) SSLPKG=libssl-dev;;
@@ -49,7 +48,6 @@ jobs:
 
       - name: Compile
         run: |
-          printf "cwd is %s" "$(pwd)"
           ./bootstrap
           ./configure --with-ssl="${TLSTYPE}" --with-cares --disable-nls
           make -j $(nproc)
