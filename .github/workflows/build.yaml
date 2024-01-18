@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       # Buster is supported by LTS until 2024-06-30
-      image: debian/buster-slim
+      image: debian:buster-slim
       # https://github.com/ImageMagick/ImageMagick/blob/eaa6f6c1670972fac0a43a9b624ef58099092a41/.github/workflows/app-image.yml#L24
       options: --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined
       env:
