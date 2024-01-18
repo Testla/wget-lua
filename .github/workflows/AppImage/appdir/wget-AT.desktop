@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=wget-AT
+Type=Application
+Exec=wget
+Terminal=true
+Categories=Utility;
+Icon=wget-AT

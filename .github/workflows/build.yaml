@@ -5,9 +5,14 @@ on: [push]
 jobs:
   build-binary:
     runs-on: ubuntu-22.04
-    env:
-      TLSTYPE: openssl
-      LC_ALL: C
+    container:
+      # Buster is supported by LTS until 2024-06-30
+      image: debian/buster-slim
+      # https://github.com/ImageMagick/ImageMagick/blob/eaa6f6c1670972fac0a43a9b624ef58099092a41/.github/workflows/app-image.yml#L24
+      options: --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined
+      env:
+        TLSTYPE: openssl
+        LC_ALL: C
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,9 +58,18 @@ jobs:
           make -j $(nproc)
           src/wget --help | grep -iE "gnu|warc|lua|dns|host|resolv"
 
+      - name: Build AppImage
+        run: |
+          set -e
+          mkdir -p .github/workflows/AppImage/appdir/usr/bin/
+          cp src/wget .github/workflows/AppImage/appdir/usr/bin/
+          cd .github/workflows/AppImage
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+          ./linuxdeploy-x86_64.AppImage --appdir appdir --output appimage
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           path: |
-            src/wget
-            /usr/local/lib
+            .github/workflows/AppImage/wget-AT-*.AppImage
