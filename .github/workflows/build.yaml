@@ -53,11 +53,9 @@ jobs:
 
       - name: Compile
         run: |
-          pwd
-          ls -A
-          df -h
-          # https://stackoverflow.com/a/40118899
-          export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+          ls -l .git
+          id
+          git config --global --add safe.directory '*'
           ./bootstrap
           ./configure --with-ssl="${TLSTYPE}" --with-cares --disable-nls
           make -j $(nproc)
