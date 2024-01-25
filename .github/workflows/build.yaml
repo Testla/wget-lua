@@ -53,7 +53,7 @@ jobs:
 
       - name: Compile
         run: |
-          ls -l .git
+          ls -ld .git
           id
           git config --global --add safe.directory '*'
           ./bootstrap
