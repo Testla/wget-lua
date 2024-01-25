@@ -8,11 +8,10 @@ jobs:
     container:
       # Buster is supported by LTS until 2024-06-30
       image: debian:buster-slim
-      # https://github.com/ImageMagick/ImageMagick/blob/eaa6f6c1670972fac0a43a9b624ef58099092a41/.github/workflows/app-image.yml#L24
-      options: --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined
       env:
         TLSTYPE: openssl
         LC_ALL: C
+        APPIMAGE_EXTRACT_AND_RUN: 1
     steps:
       - name: Install build dependencies
         run: |
@@ -69,8 +68,7 @@ jobs:
           cd .github/workflows/AppImage
           wget https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage
-          ./linuxdeploy-x86_64.AppImage --appimage-extract
-          ./squashfs-root/AppRun --appdir appdir --output appimage
+          ./linuxdeploy-x86_64.AppImage --appdir appdir --output appimage
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
