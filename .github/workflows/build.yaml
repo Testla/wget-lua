@@ -37,8 +37,8 @@ jobs:
           key: zstd-1.4.4-debian:buster-slim
           path: /tmp/zstd-*/
 
-      - if: ${{ steps.cache-zstd.outputs.cache-hit != 'true' }}
-        name: Download and build zstd
+      - name: Download and build zstd
+        if: steps.cache-zstd.outputs.cache-hit != 'true'
         run: |
           cd /tmp
           wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
@@ -58,8 +58,8 @@ jobs:
           key: c-ares-1.19.1-debian:buster-slim
           path: /tmp/c-ares-*/
 
-      - if: ${{ steps.cache-zstd.outputs.cache-hit != 'true' }}
-        name: Download and build c-ares
+      - name: Download and build c-ares
+        if: steps.cache-c-ares.outputs.cache-hit != 'true'
         run: |
           cd /tmp
           wget https://github.com/c-ares/c-ares/releases/download/cares-1_19_1/c-ares-1.19.1.tar.gz
