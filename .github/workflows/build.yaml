@@ -78,6 +78,10 @@ jobs:
 
       - name: Compile
         run: |
+          ls -ld ../../..
+          ls -ld ../..
+          ls -ld ..
+          ls -ld .
           ls -ld .git
           id
           git config --global --add safe.directory '*'
