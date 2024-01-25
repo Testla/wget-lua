@@ -28,16 +28,38 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install zstd
+      - name: Cache zstd files
+        id: cache-zstd
+        uses: actions/cache@v4
+        with:
+          # Seems we can't concatenate alias, so there is no good way other than
+          # just duplicating.
+          key: zstd-1.4.4-debian:buster-slim
+          path: /tmp/zstd-*/
+
+      - if: ${{ steps.cache-zstd.outputs.cache-hit != 'true' }}
+        name: Download and build zstd
         run: |
           cd /tmp
           wget https://github.com/facebook/zstd/releases/download/v1.4.4/zstd-1.4.4.tar.gz
           tar xf zstd-1.4.4.tar.gz
           cd zstd-1.4.4
           make
+
+      - name: Install zstd
+        run: |
+          cd /tmp/zstd-*/
           make install
 
-      - name: Install c-ares
+      - name: Cache c-ares files
+        id: cache-c-ares
+        uses: actions/cache@v4
+        with:
+          key: c-ares-1.19.1-debian:buster-slim
+          path: /tmp/c-ares-*/
+
+      - if: ${{ steps.cache-zstd.outputs.cache-hit != 'true' }}
+        name: Download and build c-ares
         run: |
           cd /tmp
           wget https://github.com/c-ares/c-ares/releases/download/cares-1_19_1/c-ares-1.19.1.tar.gz
@@ -45,6 +67,10 @@ jobs:
           cd c-ares-1.19.1
           ./configure
           make
+
+      - name: Install c-ares
+        run: |
+          cd /tmp/c-ares-*/
           make install
 
       - name: Update ld cache
