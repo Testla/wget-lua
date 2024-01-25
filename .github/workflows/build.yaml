@@ -78,13 +78,7 @@ jobs:
 
       - name: Compile
         run: |
-          ls -ld ../../..
-          ls -ld ../..
-          ls -ld ..
-          ls -ld .
-          ls -ld .git
-          id
-          git config --global --add safe.directory '*'
+          git config --global --add safe.directory "$(pwd)"
           ./bootstrap
           ./configure --with-ssl="${TLSTYPE}" --with-cares --disable-nls
           make -j $(nproc)
