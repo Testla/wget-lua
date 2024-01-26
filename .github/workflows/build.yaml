@@ -81,6 +81,7 @@ jobs:
 
       - name: Compile
         run: |
+          # Some parent directories are not owned by current user (root).
           git config --global --add safe.directory "$(pwd)"
           ./bootstrap
           ./configure --with-ssl="${TLSTYPE}" --with-cares --disable-nls
